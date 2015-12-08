@@ -1,6 +1,8 @@
 var http = require('http');//http服务器模块
 var url = require('url');//把url字符串转成对象
 var menus = [{name:"鱼香茄子",unit:"盘"},{name:"红烧茄子",unit:"碗"},{name:"酱香茄子",unit:"碟"}];
+var fs = require('fs');
+var mime = require('mime');
 /**
  * @param req 请求
  * @param res 响应
@@ -16,18 +18,31 @@ function serve(req,res){
   res.setHeader('Content-Type','text/html;charset=utf-8');
   if(pathname == '/'){//如果访问的是根目录
     res.write('<link rel="stylesheet" href="/menu.css"/>');
+    res.write('<script src="/menu.js"></script>');
+    res.write('请点菜');
     res.write('<ul>');
     menus.forEach(function(menu){
-      res.write('<li><a href="/'+menu.name+'?unit='+menu.unit+'">'+menu.name+'</a></li>');
+      res.write('<li><a href="/pick/'+menu.name+'?unit='+menu.unit+'">'+menu.name+'</a></li>');
     });
     res.write('</ul>');
     res.end();//结束响应
-  }else{
+  }else if(pathname == '/favicon.ico'){
+    res.statusCode = 404;
+    res.end('404');
+  }else if(pathname.indexOf('/pick/')==0){
     //设置内容类型
-
     //   /鱼香茄子?unit=盘  {unit:'盘'}
     res.write('一'+urlObj.query.unit+decodeURIComponent(pathname.slice(1)));
     res.end();//结束响应
+  }else{
+    //处理静态文件 menu.css menu.js menu.jpg
+    //lookup 方法 ,可以传入文件名的到文件的content-type
+    res.setHeader('Content-Type',mime.lookup(pathname.slice(1))+';charset=utf-8');
+    fs.readFile(pathname.slice(1), function (err, data) {
+      if (err) throw err;
+      res.write(data);
+      res.end();
+    });
   }
 
 }

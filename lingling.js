@@ -18,6 +18,7 @@ function serve(req,res){
     if(pathname=="/"){
         //自定义头（自定义的要求，传输数据用的）
         res.setHeader('Content-Type','text/html;charset=utf-8');
+        res.write('');
         res.write('<ul>');
         menu.forEach(function(menu){
             res.write('<li><a href="/'+menu.name+'?unit='+menu.unit+'"> '+menu.name+'</a></li>');//相应体
