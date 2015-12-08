@@ -1,5 +1,5 @@
-var http = require('http');
-var url = require('url');
+var http = require('http');//http服务器模块
+var url = require('url');//把url字符串转成对象
 var menus = [{name:"鱼香茄子",unit:"盘"},{name:"红烧茄子",unit:"碗"},{name:"酱香茄子",unit:"碟"}];
 /**
  * @param req 请求
@@ -13,9 +13,8 @@ function serve(req,res){
    //  pathname 端口号和?中间的部分
   // query 查询字符串 如果第二个参数 true,query就成为了一个json对象
   var pathname = urlObj.pathname;//取得路径名
+  res.setHeader('Content-Type','text/html;charset=utf-8');
   if(pathname == '/'){//如果访问的是根目录
-    res.setHeader('Content-Type','text/html;charset=utf-8');
-    res.setHeader('zfname','zfpx');
     res.write('<ul>');
     menus.forEach(function(menu){
       res.write('<li><a href="/'+menu.name+'?unit='+menu.unit+'">'+menu.name+'</a></li>');
@@ -24,8 +23,8 @@ function serve(req,res){
     res.end();//结束响应
   }else{
     //设置内容类型
-    res.setHeader('Content-Type','text/html;charset=utf-8');
-    //   /鱼香茄子?unit=盘
+
+    //   /鱼香茄子?unit=盘  {unit:'盘'}
     res.write('一'+urlObj.query.unit+decodeURIComponent(pathname.slice(1)));
     res.end();//结束响应
   }
