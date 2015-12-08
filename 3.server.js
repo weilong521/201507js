@@ -8,7 +8,6 @@ function serve(req,res){
   console.log(req.url);//请求的URL
   console.log(req.headers);//请求头
   console.log(req.method);
-  console.log(req.httpVersion);
   var url = req.url;
   if(url == '/'){
     res.setHeader('Content-Type','text/html;charset=utf-8');
