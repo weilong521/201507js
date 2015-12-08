@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+时钟
+<div id="clock"></div>
+</body>
+<script>
+    setInterval(function(){
+        var xhr = new XMLHttpRequest();//构建一个能发出http请求的ajax对象
+        xhr.open('POST','http://localhost:8080/clock',true);//打开一个请求 ,设置方法 路径URL
+        //xhr.setRequestHeader('zf','px');
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 ){
+                if(this.status == 200) {
+                    document.querySelector('#clock').innerHTML = this.responseText;
+                }
+            }
+        }
+        xhr.send();
+
+
+    },1000);
+</script>
+</html>
