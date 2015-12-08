@@ -18,6 +18,7 @@ function serve(req,res){
    }else if(req.url == '/clock'){
        console.log(req.method);
        console.log(req.headers.zf);
+       res.setHeader('Access-Control-Allow-Headers','zf');
        res.setHeader('Access-Control-Allow-Origin','http://localhost:63342');
     res.write(new Date().toLocaleString());
     res.end();
